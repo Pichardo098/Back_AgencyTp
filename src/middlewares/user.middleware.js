@@ -5,6 +5,8 @@ const catchAsync = require('../utils/catchAsync');
 exports.validUser = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
+  console.log(id);
+
   const user = await User.findOne(
     {
       _id: id,

@@ -57,9 +57,9 @@ exports.createUser = catchAsync(async (req, res, next) => {
           ext_tel: result.ext_tel,
           desc: result.description,
           profile_Img: result.profile_img,
+          role: result.role,
         },
       });
-      mongoose.connection.close();
     })
     .catch((err) => console.log(err));
 });
@@ -94,6 +94,7 @@ exports.login = catchAsync(async (req, res, next) => {
       ext_tel: user.ext_tel,
       desc: user.description,
       profile_Img: user.profile_img,
+      role: user.role,
     },
   });
 });
@@ -164,8 +165,84 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
   await User.findOneAndUpdate(filter, updated, { new: true });
 
-  return res.status(200).json({
+  return res.status(201).json({
     status: 'success',
     message: 'User has been updated',
+  });
+});
+
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  const { user } = req;
+
+  const filter = { _id: user._id };
+  const updated = {
+    user_status: userStatus.inactive,
+  };
+
+  await User.findOneAndUpdate(filter, updated, { new: true });
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'User has been deleted',
+  });
+});
+
+exports.updateRole = catchAsync(async (req, res, next) => {
+  const { role } = req.body;
+  const { id } = req.params;
+
+  const filter = { _id: id };
+  const updated = { role };
+
+  await User.findOneAndUpdate(filter, updated, { new: true });
+
+  return res.status(201).json({
+    status: 'success',
+    message: 'User has been updated',
+  });
+});
+
+exports.findUsersRoleSrJr = catchAsync(async (req, res, next) => {
+  const users = await User.find(
+    {
+      user_status: userStatus.active,
+      role: { $in: ['jr executive', 'sr executive'] },
+    },
+    {
+      __v: false,
+      created_at: false,
+      description: false,
+      password: false,
+      user_status: false,
+      queue_status: false,
+    }
+  );
+
+  return res.status(200).json({
+    status: 'success',
+    results: users.length,
+    users,
+  });
+});
+
+exports.findMyProfile = catchAsync(async (req, res, next) => {
+  const { _id } = req.sessionUser;
+
+  const user = await User.findOne(
+    {
+      _id,
+    },
+    {
+      __v: false,
+      created_at: false,
+      _id: false,
+      user_status: false,
+      password: false,
+    }
+  );
+
+  return res.status(200).json({
+    status: 'success',
+    user,
   });
 });

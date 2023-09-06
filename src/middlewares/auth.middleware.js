@@ -31,6 +31,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     {
       email: true,
       updated_at: true,
+      role: true,
     }
   );
 
@@ -38,7 +39,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError('The owner account is not available', 401));
   }
 
-  //TODO: Validación de cambio de datos
+  //TODO: Validación de cambio de datos-->Pendiente
 
   req.sessionUser = user;
   next();
@@ -55,4 +56,16 @@ exports.protectAccountOwner = (req, res, next) => {
   }
 
   next();
+};
+
+exports.allowTo = (...roles) => {
+  return (req, res, next) => {
+    console.log(req.sessionUser);
+    if (!roles.includes(req.sessionUser.role)) {
+      return next(
+        new AppError('You do not have permission to perform this action.', 403)
+      );
+    }
+    next();
+  };
 };

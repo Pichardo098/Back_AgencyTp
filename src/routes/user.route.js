@@ -25,21 +25,36 @@ router.post(
 
 router.use(authMiddleware.protect);
 
+router.patch(
+  '/roleUserUpdate/:id',
+  authMiddleware.allowTo('supervisor'),
+  userController.updateRole
+);
+
+router.get(
+  '/findUsersRoleSrJr',
+  authMiddleware.allowTo('supervisor'),
+  userController.findUsersRoleSrJr
+);
+
+router.get('/myProfile', userController.findMyProfile);
+
 router.get('/:id', userMiddleware.validUser, userController.findOneUser);
 router.get('/', userController.findAllUsers);
 
-router
-  .route('/:id')
-  .patch(
-    upload.single('profileImgUrl'),
-    userMiddleware.validUser,
-    authMiddleware.protectAccountOwner,
-    userController.updateUser
-  )
-  .delete(
-    userMiddleware.validUser,
-    authMiddleware.protectAccountOwner,
-    userMiddleware.validUser
-  );
+router.patch(
+  '/:id',
+  upload.single('profileImgUrl'),
+  userMiddleware.validUser,
+  authMiddleware.protectAccountOwner,
+  userController.updateUser
+);
+
+router.delete(
+  '/:id',
+  userMiddleware.validUser,
+  authMiddleware.protectAccountOwner,
+  userMiddleware.validUser
+);
 
 module.exports = router;
