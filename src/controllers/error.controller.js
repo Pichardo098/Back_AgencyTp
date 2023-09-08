@@ -1,3 +1,4 @@
+const Error = require('../models/error.model');
 const AppError = require('../utils/appError');
 
 const handleJWTExpiredError = () =>
@@ -7,6 +8,18 @@ const handleJWTError = () =>
   new AppError('Invalid Token. Please login again', 401);
 
 const sendErrorProd = (err, res) => {
+  const error = new Error({
+    status: err.status,
+    message: err.message,
+    stack: err.stack,
+    created_at: Date.now(),
+  });
+
+  error
+    .save()
+    .then()
+    .catch((err) => console.log(err));
+
   if (err.isOperational) {
     return res.status(err.statusCode).json({
       status: err.status,
