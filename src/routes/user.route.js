@@ -54,7 +54,7 @@ router.delete(
   '/:id',
   userMiddleware.validUser,
   authMiddleware.protectAccountOwner,
-  userMiddleware.validUser
+  userController.deleteUser
 );
 
 module.exports = router;

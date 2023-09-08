@@ -198,7 +198,7 @@ exports.updateRole = catchAsync(async (req, res, next) => {
 
   return res.status(201).json({
     status: 'success',
-    message: 'User has been updated',
+    message: 'Role has been updated',
   });
 });
 
@@ -214,7 +214,6 @@ exports.findUsersRoleSrJr = catchAsync(async (req, res, next) => {
       description: false,
       password: false,
       user_status: false,
-      queue_status: false,
     }
   );
 
@@ -235,7 +234,6 @@ exports.findMyProfile = catchAsync(async (req, res, next) => {
     {
       __v: false,
       created_at: false,
-      _id: false,
       user_status: false,
       password: false,
     }
