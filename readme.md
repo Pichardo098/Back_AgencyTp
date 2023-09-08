@@ -40,7 +40,7 @@ La aplicación esta construida con Node.js, Express y utiliza como base de datos
 ```
 
 3. Tener una base de datos en MongoDB y realizar la conexión.
-4. Crearse una app de firebase e inicializar firestore en ella, NOTA: En el esquema del modelo utilizar una URL de una imagen base para el valor por default del campo "profileImgUrl".
+4. Crearse una app de firebase e inicializar firestore en ella, NOTA: En el esquema del modelo utilizar una URL de una imagen base para el valor por default.
 5. Clonar el .env.template y renombrarlo a .env
 6. Llenar las variables de entorno
 7. Levantar el modo de desarrollo utilizando el comando:
