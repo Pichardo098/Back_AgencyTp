@@ -5,7 +5,6 @@ const AppError = require('../utils/appError');
 const bcrypt = require('bcryptjs');
 const catchAsync = require('../utils/catchAsync');
 const generateJWT = require('../utils/jwt');
-const mongoose = require('mongoose');
 const storage = require('../utils/firebase');
 
 exports.createUser = catchAsync(async (req, res, next) => {
@@ -58,6 +57,7 @@ exports.createUser = catchAsync(async (req, res, next) => {
           desc: result.description,
           profile_Img: result.profile_img,
           role: result.role,
+          queue: result.queue_status,
         },
       });
     })
@@ -95,6 +95,7 @@ exports.login = catchAsync(async (req, res, next) => {
       desc: user.description,
       profile_Img: user.profile_img,
       role: user.role,
+      queue: user.queue_status,
     },
   });
 });
